@@ -11,6 +11,7 @@ import NotFound from "./components/NotFound/NotFound";
 import CheckoutRoom from "./components/CheckoutRoom/CheckoutRoom";
 import SignUp from "./components/SignUp/SignUp";
 import PrivateRoute from "./components/PrivateRoute/PrivateRoute";
+import Header from "./components/Header/Header";
 
 
 
