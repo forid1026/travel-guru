@@ -8,10 +8,8 @@ import Home from "./components/Home/Home";
 import Booking from "./components/Booking/Booking";
 import Login from "./components/Login/Login";
 import NotFound from "./components/NotFound/NotFound";
-import CheckoutRoom from "./components/CheckoutRoom/CheckoutRoom";
-import SignUp from "./components/SignUp/SignUp";
 import PrivateRoute from "./components/PrivateRoute/PrivateRoute";
-import Header from "./components/Header/Header";
+import CheckoutRoom from "./components/CheckoutRoom/CheckoutRoom";
 
 
 
@@ -25,6 +23,8 @@ function App() {
     isBooking:false,
     id:""     
   })
+
+  // const [signOutUser, setSignOutUser] = useState({});
   
   return (
     <UserContext.Provider value={[loggedInUser, setLoggedInUser, booking, setBooking]}>
@@ -45,9 +45,6 @@ function App() {
         <PrivateRoute path="/checkoutRoom">
           <CheckoutRoom/>
         </PrivateRoute>
-        <Route path="/signup">
-          <SignUp/>
-        </Route>
         <Route path="/">
           <Home/>
         </Route>

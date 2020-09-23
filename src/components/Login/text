@@ -5,18 +5,14 @@ import googleIcon from '../../Icon/google.png';
 import * as firebase from "firebase/app";
 import "firebase/auth";
 import firebaseConfig from './firebaseConfig';
+import { useHistory, useLocation } from 'react-router-dom';
 import { UserContext } from '../../App';
 import Header from '../Header/Header';
-import { useHistory, useLocation } from 'react-router';
 
 
 firebase.initializeApp(firebaseConfig);
 
 const Login = () =>{
-    const history = useHistory();
-    const location = useLocation();
-    let { from } = location.state || { from: { pathname: "/" } };
-
 const [newUser, setNewUser] = useState(true);
 const [user, setUser] = useState({
     name:'',
@@ -24,10 +20,15 @@ const [user, setUser] = useState({
     password:'',
     success:false,
     isLoggedIn:false,
-    error:''
+    error:'' 
 
 });
 const [loggedInUser, setLoggedInUser] = useContext(UserContext);
+    let history = useHistory();
+    let location = useLocation();
+
+    let { from } = location.state || { from: { pathname: "/" } };
+
 
    
     const handleGoogleSignIn = () => {
@@ -37,12 +38,10 @@ const [loggedInUser, setLoggedInUser] = useContext(UserContext);
         firebase.auth().signInWithPopup(provider)
             .then(result => {
                 const { displayName, email } = result.user;
-                const signedInUser = { name: displayName, email: email };
-                setUser(signedInUser);
-                console.log(signedInUser);
+                const signedInUser = { name: displayName, email };
                 setLoggedInUser(signedInUser);
+                setUser(signedInUser);
                 history.replace(from);
-                
             })
 
             .catch(error => {
@@ -57,16 +56,13 @@ const [loggedInUser, setLoggedInUser] = useContext(UserContext);
 
    
     const fbSignIn = () => {
-        const fbProvider = new firebase.auth.FacebookAuthProvider();
-        firebase.auth().signInWithPopup(fbProvider)
+        const provider = new firebase.auth.FacebookAuthProvider();
+        firebase.auth().signInWithPopup(provider)
             .then(res => {
                 const { displayName, email } = res.user;
-                const signedInUser = { name: displayName, email };
+                const signedInUser = { name: displayName, email: email };
                 setUser(signedInUser);
-                console.log(signedInUser);
-                setLoggedInUser(signedInUser);
-                // history.replace(from);
-               
+                history.replace(from);
             })
             .catch(err => {
                 const error = err.message;
@@ -78,14 +74,18 @@ const [loggedInUser, setLoggedInUser] = useContext(UserContext);
     const handleSignOut = () => {
         firebase.auth().signOut()
         .then(res => {
-            const signedOutUser ={
-                isLoggedIn: false,
+            const signOutUser = {
+                isSignedIn: false,
                 name: '',
                 email: '',
                 error: '',
                 success: false
+            
             }
-            // setSignOutUser(signedOutUser);
+            setUser(signOutUser);
+        })
+        .catch(err =>{
+            console.log(err);
         })
     }
 
@@ -103,7 +103,7 @@ const [loggedInUser, setLoggedInUser] = useContext(UserContext);
         if(isFormValid){
             const newUserInfo = {...user};
             newUserInfo[e.target.name] = e.target.value;
-            setUser(newUserInfo)
+            setUser(newUserInfo);
         }
     }
 
@@ -111,19 +111,18 @@ const [loggedInUser, setLoggedInUser] = useContext(UserContext);
         if(newUser && user.email && user.password){
             firebase.auth().createUserWithEmailAndPassword(user.email, user.password)
             .then(res => {
-               const newUserInfo = {...user};
-               newUserInfo.error= '';
-               newUserInfo.success = true;
-               setUser(newUserInfo);
-                console.log(res);
-               updateUserName(user.name); 
-               setLoggedInUser(newUserInfo);
+                 const newUserInfo = {...user};
+                 newUserInfo.error = '';
+                 newUserInfo.success = true;
+                 setUser(newUserInfo);
+                history.replace(from);
             })
-            .catch(function(error) {
+            .catch( error =>{
                 const newUserInfo = {...user};
                 newUserInfo.error = error.message;
                 newUserInfo.success = false;
-                setUser(newUserInfo)
+                setUser(newUserInfo);
+                // setLoggedInUser(newUserInfo)
             });
         }
 
@@ -131,17 +130,27 @@ const [loggedInUser, setLoggedInUser] = useContext(UserContext);
             firebase.auth().signInWithEmailAndPassword(user.email, user.password)
             .then(res => {
                 const newUserInfo = {...user};
-                newUserInfo.error= '';
-                newUserInfo.success = true;
-                setUser(newUserInfo);
-                setLoggedInUser(newUserInfo);
+                 newUserInfo.error = '';
+                 newUserInfo.success = true;
+                 setUser(newUserInfo);
                 history.replace(from);
+
+                // const {displayName, email} = res.user;
+                // const newUserInfo = {...user};
+                // newUserInfo.name = displayName;
+                // newUserInfo.email = email;
+                // newUserInfo.error = '';
+                // newUserInfo.success = true;
+                // newUserInfo.isLoggedIn = true;
+                // // setLoggedInUser(newUserInfo);
+            
             })
-            .catch(function(error) {
+            .catch(error =>{
                 const newUserInfo = {...user};
                 newUserInfo.error = error.message;
                 newUserInfo.success = false;
-                setUser(newUserInfo)
+                setUser(newUserInfo);
+                // setLoggedInUser(newUserInfo)
             });
         }
         e.preventDefault()
@@ -167,6 +176,8 @@ const [loggedInUser, setLoggedInUser] = useContext(UserContext);
         <div className="header">
         <Header/>
         <div className='col-md-6 text-center mx-auto border border-secondary p-4  bg-light rounded'>
+    <p>email: {user.email}</p>
+    <p>password: {user.password}</p>
             <h4 className='mb-3'>Create an account</h4>
             <form onSubmit={handleSubmit}>
                 {
@@ -184,9 +195,12 @@ const [loggedInUser, setLoggedInUser] = useContext(UserContext);
             
                 <p style={{color:'red'}}>{user.error}</p>
               {
-                  user.success && <p style={{color:'green'}}>User { newUser ?'created' : 'Login'} successfully!</p>
-
+                  user.success && <p style={{color: 'green'}}>
+                   {newUser ? 'Created' : ''} { newUser ?'Account' : ''} Successfully </p> 
               }
+
+               
+
             <p>{newUser ? 'Already have an account?' : "Don't have an account?"} <span style={{cursor:'pointer'}} onClick={() => setNewUser(!newUser)} className='text-warning'>{ newUser ? 'Login' : 'Create an account'}</span></p>
             <p>Or</p>
 
