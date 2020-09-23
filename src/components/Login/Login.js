@@ -27,7 +27,7 @@ const [user, setUser] = useState({
     error:''
 
 });
-const [loggedInUser, setLoggedInUser] = useContext(UserContext);
+const [loggedInUser, setLoggedInUser, signOutUser, setSignOutUser] = useContext(UserContext);
 
    
     const handleGoogleSignIn = () => {
@@ -65,7 +65,7 @@ const [loggedInUser, setLoggedInUser] = useContext(UserContext);
                 setUser(signedInUser);
                 console.log(signedInUser);
                 setLoggedInUser(signedInUser);
-                // history.replace(from);
+                history.replace(from);
                
             })
             .catch(err => {
@@ -85,7 +85,7 @@ const [loggedInUser, setLoggedInUser] = useContext(UserContext);
                 error: '',
                 success: false
             }
-            // setSignOutUser(signedOutUser);
+            setSignOutUser(signedOutUser);
         })
     }
 

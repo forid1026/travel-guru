@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import logo from '../../Logo.png'
 import { InputAdornment, TextField } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
 import './Header.css';
 import { Link } from 'react-router-dom';
+import { UserContext } from '../../App';
 
 
 
@@ -12,7 +13,7 @@ const Header = () => {
         border: '1px solid #ccc',
         borderRadius: '4px'
     }
-
+    const [loggedInUser, setLoggedInUser, signOutUser, setSignOutUser] = useContext(UserContext);
     return (
         <div>
             <nav>
@@ -50,9 +51,12 @@ const Header = () => {
 
                     
                     <Link to="/login">
-                    <button className="login-button">Login</button>
+                   {
+                       loggedInUser.email ?  <button className="login-button" onClick={() => signOutUser}>Logout</button>
+                       :
+                       <button className="login-button">Login</button>
+                   }
                     </Link>
-                
                     
                 
                 </ul>

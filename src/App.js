@@ -24,10 +24,10 @@ function App() {
     id:""     
   })
 
-  // const [signOutUser, setSignOutUser] = useState({});
+  const [signOutUser, setSignOutUser] = useState({});
   
   return (
-    <UserContext.Provider value={[loggedInUser, setLoggedInUser, booking, setBooking]}>
+    <UserContext.Provider value={[loggedInUser, setLoggedInUser, signOutUser, setSignOutUser, booking, setBooking]}>
     <Router>
       <Switch>
         <Route path="/home">
