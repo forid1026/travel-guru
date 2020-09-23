@@ -17,27 +17,27 @@ const Header = () => {
     return (
         <div>
             <nav>
-                <img className="logo" src={logo} alt=""/>
-                <ul>    
+                <img className="logo" src={logo} alt="" />
+                <ul>
                     <li>
-                    <TextField className="text-field" style={textFieldStyle} margin="normal"
-                        placeholder="Search Your Destination"
-                        variant="outlined"
-                        InputProps={{
-                            startAdornment:(
-                                
-                                <InputAdornment >
-                                <SearchIcon style={{color: 'white'}}/> 
-                                
-                                </InputAdornment>
-                            )
-                        }}
+                        <TextField className="text-field" style={textFieldStyle} margin="normal"
+                            placeholder="Search Your Destination"
+                            variant="outlined"
+                            InputProps={{
+                                startAdornment: (
+
+                                    <InputAdornment >
+                                        <SearchIcon style={{ color: 'white' }} />
+
+                                    </InputAdornment>
+                                )
+                            }}
                         />
                     </li>
                     <li>
-            
+
                         <a href="/home">Home</a>
-                        
+
                     </li>
                     <li>
                         <a href="/destination">Destination</a>
@@ -49,16 +49,16 @@ const Header = () => {
                         <a href="/contact">Contact</a>
                     </li>
 
-                    
+
                     <Link to="/login">
-                   {
-                       loggedInUser.email ?  <button className="login-button" onClick={() => signOutUser}>Logout</button>
-                       :
-                       <button className="login-button">Login</button>
-                   }
+                        {
+                            loggedInUser.email ? <button className="login-button" onClick={() => signOutUser}>Logout</button>
+                                :
+                                <button className="login-button">Login</button>
+                        }
                     </Link>
-                    
-                
+
+
                 </ul>
             </nav>
         </div>

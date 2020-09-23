@@ -1,7 +1,6 @@
 import React from 'react';
 import './Hotel.css';
 const Hotel = (props) => {
-    console.log(props);
     const { name, conditions, capacity, ratings, cords, totalRating, price, image, ratingIcon } = props.hotels;
     return (
         <div className="d-flex  text-dark">
@@ -11,10 +10,10 @@ const Hotel = (props) => {
             <div className="">
                 <h6 className="mb-0">{name}</h6>
                 <p className="mb-0">
-                
-                        {capacity.guest} guest, {capacity.rooms} rooms, {capacity.beds} beds,{" "}
-                        {capacity.bathrooms} bathrooms
-                    
+
+                    {capacity.guest} guest, {capacity.rooms} rooms, {capacity.beds} beds,{" "}
+                    {capacity.bathrooms} bathrooms
+
                 </p>
                 <p className="mb-0">
                     {
@@ -24,9 +23,9 @@ const Hotel = (props) => {
                 <p className="mb-0">{conditions[1]}</p>
                 <p className="d-flex">
                     <small>
-                <strong><img src={ratingIcon} className="w-25 icon" alt=""/> <span style={{fontSize: '12px'}}>{ratings} ({totalRating})</span> </strong>
+                        <strong><img src={ratingIcon} className="w-25 icon" alt="" /> <span style={{ fontSize: '12px' }}>{ratings} ({totalRating})</span> </strong>
                     </small>
-                <strong className="price">${price}/night</strong>
+                    <strong className="price">${price}/night</strong>
                 </p>
             </div>
         </div>

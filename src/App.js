@@ -17,39 +17,35 @@ export const UserContext = createContext();
 
 function App() {
   const [loggedInUser, setLoggedInUser] = useState({});
-  const [booking, setBooking]=useState({
-    name:"",
-    about:"",
-    isBooking:false,
-    id:""     
-  })
+
 
   const [signOutUser, setSignOutUser] = useState({});
-  
+
   return (
-    <UserContext.Provider value={[loggedInUser, setLoggedInUser, signOutUser, setSignOutUser, booking, setBooking]}>
-    <Router>
-      <Switch>
-        <Route path="/home">
-          <Home/>
-        </Route>
-        <Route path="/booking/:bookingId">
-          <Booking/>
-        </Route>
-        <Route path="/login">
-          <Login />
-        </Route>
-        <Route path="/notFound">
-          <NotFound />
-        </Route>
-        <PrivateRoute path="/checkoutRoom">
-          <CheckoutRoom/>
-        </PrivateRoute>
-        <Route path="/">
-          <Home/>
-        </Route>
-      </Switch>
-    </Router>
+    <UserContext.Provider value={[loggedInUser, setLoggedInUser, signOutUser, setSignOutUser]}>
+      <Router>
+        <Switch>
+          <Route path="/home">
+            <Home />
+          </Route>
+          <Route path="/booking/:bookingId">
+            <Booking />
+          </Route>
+          <Route path="/login">
+            <Login />
+          </Route>
+          
+          <PrivateRoute path="/checkoutRoom">
+            <CheckoutRoom />
+          </PrivateRoute>
+          <Route exact path="/">
+            <Home />
+          </Route>
+          <Route path="*">
+            <NotFound />
+          </Route>
+        </Switch>
+      </Router>
     </UserContext.Provider>
 
   );
